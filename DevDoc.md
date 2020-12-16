@@ -217,6 +217,27 @@ func Routes(router *gin.Engine)  {
 
 其中`controller.GetAllUser`为`controller/UserController`下的一个方法
 
+#### 接口需求
+
+|       接口名称        |                功能 难度                 |
+| :-------------------: | :--------------------------------------: |
+|    `user/register`    |                用户注册 0                |
+|     `user/login`      |                用户登录 1                |
+|     `user/logout`     |                用户登出 1                |
+|   `user/checkLogin`   | 检查登录状态，若为管理员，返回权限列表 2 |
+|    `user/addRole`     |              添加用户角色 0              |
+|   `user/deleteRole`   |              删除用户角色 0              |
+|   `user/getAllAuth`   |            获取用户权限列表 2            |
+|    `user/getMenu`     |            获取用户后台列表 2            |
+|    `role/addRole`     |                添加角色 0                |
+|   `role/deleteRole`   |                删除角色 0                |
+|    `role/editRole`    |                编辑角色 0                |
+|  `role/addRoleAuth`   |              添加角色权限 0              |
+| `role/deleteRoleAuth` |              删除角色权限 0              |
+|    `auth/addAuth`     |                添加权限 0                |
+|   `auth/deleteAuth`   |                删除权限 0                |
+|    `auth/editAuth`    |                编辑权限 0                |
+
 ## 前端
 
 使用`layuimini`开发使用
