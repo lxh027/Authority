@@ -245,5 +245,19 @@ func Routes(router *gin.Engine)  {
 文档地址：
 
 - `layui`:[layui](https://www.layui.com/doc/)
-
 - `layuimini`:[layuimini](http://layuimini.99php.cn/docs/index.html)
+
+
+
+|       页面        |       功能       |
+| :---------------: | :--------------: |
+| `auth/index.html` |     权限列表     |
+|  `auth/add.html`  |     添加权限     |
+| `auth/edit.html`  |     编辑权限     |
+| `role/index.html` |     角色列表     |
+|  `role/add.html`  |     添加角色     |
+| `role/edit.html`  |     编辑角色     |
+| `role/auth.html`  | 角色所有权限列表 |
+| `user/index.html` |     用户列表     |
+| `user/role.html`  | 用户所有角色列表 |
+
