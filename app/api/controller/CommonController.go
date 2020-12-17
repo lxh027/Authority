@@ -17,10 +17,10 @@ type menuItem struct {
 }
 
 
-func hashAuth(c *gin.Context, authQuery string) int {
+func haveAuth(c *gin.Context, authQuery string) int {
 	session := sessions.Default(c)
 	id := session.Get("user_id")
-	if  id != nil {
+	if  id == nil {
 		return common.UnLoggedIn
 	} else if session.Get("is_admin").(int) == 0 {
 		return common.UnAuthed
