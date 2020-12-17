@@ -17,6 +17,8 @@ func init() {
 	scenes := map[string] []string {
 		"register" 	: {"nick", "password", "password_check", "mail"},
 		"login"		: {"nick", "password"},
+		"delete"	: {"uid"},
+		"update"	: {"uid", "nick", "mail"},
 	}
 
 	UserValidate.Rules = rules

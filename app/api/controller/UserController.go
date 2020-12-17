@@ -10,6 +10,47 @@ import (
 	"net/http"
 )
 
+func UpdateUser(c *gin.Context)  {
+	/*if res := haveAuth(c, "updateUser"); res != common.Authed {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}*/
+	userValidate := validate.UserValidate
+	userModel := model.User{}
+
+	if res, err:= userValidate.Validate(c, "update"); !res {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, err.Error(), 0))
+		return
+	}
+
+	var userJson model.User
+
+	if c.ShouldBind(&userJson) == nil {
+		res := userModel.UpdateUser(userJson.Uid, userJson)
+		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
+		return
+	}
+}
+
+func DeleteUser(c *gin.Context)  {
+	userValidate := validate.UserValidate
+	userModel := model.User{}
+
+	if res, err:= userValidate.Validate(c, "delete"); !res {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, err.Error(), 0))
+		return
+	}
+
+	userIDJson := struct {
+		Uid	int `json:"uid" form:"uid"`
+	}{}
+
+	if c.ShouldBind(&userIDJson) == nil {
+		res := userModel.DeleteUser(userIDJson.Uid)
+		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
+		return
+	}
+}
 
 func GetAllUser(c *gin.Context)  {
 	userModel := model.User{}
