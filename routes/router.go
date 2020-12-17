@@ -14,6 +14,8 @@ func Routes(router *gin.Engine)  {
 		user := api.Group("/user")
 		{
 			user.POST("/register", controller.Register)
+			user.POST("/login", controller.Login)
+			user.POST("/logout", controller.Logout)
 		}
 	}
 	router.StaticFS("/public", http.Dir("./web"))
