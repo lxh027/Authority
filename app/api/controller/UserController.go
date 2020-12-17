@@ -69,6 +69,7 @@ func Login(c *gin.Context) {
 			returnData := map[string]interface{} {
 				"user_id" : userInfo.Uid,
 				"nick":		userInfo.Nick,
+				"is_admin": userInfo.IsAdmin,
 			}
 			jsonData, _ := json.Marshal(returnData)
 			session.Set("user_id", returnData["user_id"])
@@ -89,4 +90,15 @@ func Logout(c *gin.Context)  {
 	session.Clear()
 	session.Save()
 	c.JSON(http.StatusOK, common.ApiReturn(common.CODE_SUCCESS, "注销成功", session.Get("user_id")))
+}
+
+func GetUserInfo(c *gin.Context)  {
+	session := sessions.Default(c)
+	if id := session.Get("user_id"); id != nil {
+		data := make(map[string]interface{}, 0)
+		_ = json.Unmarshal([]byte(session.Get("data").(string)), &data)
+		c.JSON(http.StatusOK, common.ApiReturn(common.CODE_SUCCESS, "已登陆", data))
+		return
+	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CODE_ERROE, "未登陆", false))
 }

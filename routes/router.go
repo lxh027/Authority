@@ -16,6 +16,7 @@ func Routes(router *gin.Engine)  {
 			user.POST("/register", controller.Register)
 			user.POST("/login", controller.Login)
 			user.POST("/logout", controller.Logout)
+			user.POST("/getUserInfo", controller.GetUserInfo)
 		}
 	}
 	router.StaticFS("/public", http.Dir("./web"))
