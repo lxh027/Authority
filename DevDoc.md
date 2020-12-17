@@ -221,6 +221,7 @@ func Routes(router *gin.Engine)  {
 
 |       接口名称        |                功能 难度                 |
 | :-------------------: | :--------------------------------------: |
+|   `user/getAllUser`   |               获取用户列表               |
 |    `user/register`    |                用户注册 0                |
 |     `user/login`      |                用户登录 1                |
 |     `user/logout`     |                用户登出 1                |
@@ -229,11 +230,13 @@ func Routes(router *gin.Engine)  {
 |   `user/deleteRole`   |              删除用户角色 0              |
 |   `user/getAllAuth`   |            获取用户权限列表 2            |
 |    `user/getMenu`     |            获取用户后台列表 2            |
+|   `role/getAllRole`   |              获取权限列表 0              |
 |    `role/addRole`     |                添加角色 0                |
 |   `role/deleteRole`   |                删除角色 0                |
 |    `role/editRole`    |                编辑角色 0                |
 |  `role/addRoleAuth`   |              添加角色权限 0              |
 | `role/deleteRoleAuth` |              删除角色权限 0              |
+|   `auth/getAllAuth`   |              获取所有权限 0              |
 |    `auth/addAuth`     |                添加权限 0                |
 |   `auth/deleteAuth`   |                删除权限 0                |
 |    `auth/editAuth`    |                编辑权限 0                |
