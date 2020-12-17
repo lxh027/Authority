@@ -20,6 +20,26 @@ type menuItem struct {
 	Child 	[]menuItem `json:"child"`
 }
 
+func GetAllUser(c *gin.Context)  {
+	userModel := model.User{}
+
+	userJson := struct {
+		Offset 	int 	`json:"offset" form:"offset"`
+		Limit 	int 	`json:"limit" form:"limit"`
+		Where 	struct{
+			Nick 	string 	`json:"nick" form:"nick"`
+			Mail 	string 	`json:"mail" form:"mail"`
+		}
+	}{}
+
+	if c.ShouldBind(&userJson) == nil {
+		userJson.Offset = (userJson.Offset-1)*userJson.Limit
+		res := userModel.GetAllUser(userJson.Offset, userJson.Limit, userJson.Where.Nick, userJson.Where.Mail)
+		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
+		return
+	}
+}
+
 func Register(c *gin.Context) {
 	userValidate := validate.UserValidate
 	userModel := model.User{}
