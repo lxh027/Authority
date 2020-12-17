@@ -19,5 +19,5 @@ func (model *Auth) GetUserAllAuth(userID int) common.ReturnType  {
 		Joins("JOIN user_role ON role_auth.rid = user_role.rid AND user_role.uid = ?", userID).
 		Find(&auths)
 
-	return common.ReturnType{Status: common.CODE_SUCCESS, Msg: "OK", Data: auths}
+	return common.ReturnType{Status: common.CodeSuccess, Msg: "OK", Data: auths}
 }
