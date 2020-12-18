@@ -16,7 +16,7 @@ type Role struct {
 
 func (model *Role) GetAllRole(offset int, limit int, name string, desc string) common.ReturnType {
 	var roles []Role
-	where := "name like ? AND desc like ?"
+	where := "name like ? AND `desc` like ?"
 	var count int
 
 	err := db.Offset(offset).
@@ -93,5 +93,32 @@ func (model *Role) GetRoleNoRules() common.ReturnType {
 	} else {
 		return common.ReturnType{Status: common.CodeSuccess, Msg: "查询成功", Data: rolesTotal,
 		}
+	}
+}
+
+func (model *Role) GetRoleByID(rid int) common.ReturnType {//jun
+	var getRole Role
+
+	err := db.Select([]string{"name", "`desc`"}).Where("rid = ?", rid).First(&getRole).Error
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "查询失败", Data: err.Error()}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "查询成功", Data: getRole}
+	}
+}
+
+func (model *Role) AddRole(newRole Role) common.ReturnType {//jun
+	role :=Role{}
+
+	if err := db.Where("name = ? OR `desc` = ?", newRole.Name,newRole.Desc).First(&role).Error; err == nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "角色名或描述已存在",  Data: false}
+	}
+
+	err := db.Create(&newRole).Error
+
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "创建失败", Data: err.Error()}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "创建成功", Data: true}
 	}
 }
