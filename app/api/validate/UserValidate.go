@@ -19,6 +19,7 @@ func init() {
 		"register" 	: {"nick", "password", "password_check", "mail"},
 		"login"		: {"nick", "password"},
 		"delete"	: {"uid"},
+		"find"		: {"uid"},
 		"update"	: {"uid", "nick", "mail"},
 		"groupDelete": {"users"},
 	}

@@ -81,3 +81,14 @@ func (model *User) GetAllUser(offset int, limit int, nick string, email string) 
 		}
 	}
 }
+
+func (model *User) GetUserByID(uid int) common.ReturnType {
+	var getUser User
+
+	err := db.Select([]string{"nick", "mail"}).Where("uid = ?", uid).First(&getUser).Error
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "查询失败", Data: err.Error()}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "查询成功", Data: getUser}
+	}
+}

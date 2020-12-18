@@ -14,6 +14,7 @@ func Routes(router *gin.Engine)  {
 		user := api.Group("/user")
 		{
 			user.POST("/getAllUser", controller.GetAllUser)
+			user.POST("/getUserByID", controller.GetUserByID)
 			user.POST("/register", controller.Register)
 			user.POST("/login", controller.Login)
 			user.POST("/logout", controller.Logout)

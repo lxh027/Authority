@@ -106,6 +106,26 @@ func GetAllUser(c *gin.Context)  {
 	return
 }
 
+func GetUserByID(c *gin.Context) {
+	userValidate := validate.UserValidate
+	userModel := model.User{}
+
+	if res, err:= userValidate.Validate(c, "find"); !res {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, err.Error(), 0))
+		return
+	}
+
+	var userJson model.User
+
+	if c.ShouldBind(&userJson) == nil {
+		res := userModel.GetUserByID(userJson.Uid)
+		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
+		return
+	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
+	return
+}
+
 func Register(c *gin.Context) {
 	userValidate := validate.UserValidate
 	userModel := model.User{}
