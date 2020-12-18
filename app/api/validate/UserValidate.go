@@ -12,6 +12,7 @@ func init() {
 		"password_check": "required|minLen:6|maxLen:20",
 		"mail"	: "required|email",
 		"is_admin": "required|bool",
+		"users"	: "required|array",
 	}
 
 	scenes := map[string] []string {
@@ -19,6 +20,7 @@ func init() {
 		"login"		: {"nick", "password"},
 		"delete"	: {"uid"},
 		"update"	: {"uid", "nick", "mail"},
+		"groupDelete": {"users"},
 	}
 
 	UserValidate.Rules = rules

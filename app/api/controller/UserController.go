@@ -30,6 +30,36 @@ func UpdateUser(c *gin.Context)  {
 		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
 		return
 	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
+	return
+}
+
+func DeleteUsers(c *gin.Context) {
+	userValidate := validate.UserValidate
+	userModel := model.User{}
+
+	if res, err:= userValidate.Validate(c, "groupDelete"); !res {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, err.Error(), 0))
+		return
+	}
+
+	userArrayJson := struct {
+		Users []int `json:"users" form:"users"`
+	}{}
+
+	if c.ShouldBind(&userArrayJson) == nil {
+		for _, uid := range userArrayJson.Users {
+			res := userModel.DeleteUser(uid)
+			if res.Status != common.CodeSuccess {
+				c.JSON(http.StatusOK, common.ApiReturn(res.Status, "uid为"+string(rune(uid))+"的用户删除失败", res.Data))
+				return
+			}
+		}
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeSuccess, "删除成功", true))
+		return
+	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
+	return
 }
 
 func DeleteUser(c *gin.Context)  {
@@ -50,6 +80,8 @@ func DeleteUser(c *gin.Context)  {
 		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
 		return
 	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
+	return
 }
 
 func GetAllUser(c *gin.Context)  {
@@ -70,6 +102,8 @@ func GetAllUser(c *gin.Context)  {
 		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
 		return
 	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
+	return
 }
 
 func Register(c *gin.Context) {
