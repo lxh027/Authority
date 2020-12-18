@@ -163,7 +163,7 @@
                 }
             }).then(() => {
                 $.getJSON("api/init.json", (data) => {
-                    //data.menuInfo = menuJson
+                    data.menuInfo = menuJson
                     var options = {
                         iniUrl: data,    // 初始化接口
                         clearUrl: "api/clear.json", // 缓存清理接口
