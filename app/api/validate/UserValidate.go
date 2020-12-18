@@ -22,6 +22,7 @@ func init() {
 		"find"		: {"uid"},
 		"update"	: {"uid", "nick", "mail"},
 		"groupDelete": {"users"},
+		"set_admin"	: {"uid", "is_admin"},
 	}
 
 	UserValidate.Rules = rules

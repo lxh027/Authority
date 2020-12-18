@@ -79,7 +79,8 @@
                         $("#currentTableBar").append(getButton(3, 'delete', '删除'))
                     }
                     if (auths.indexOf("roleAssign") !== -1) {
-                        $("#currentTableBar").append(getButton(4, 'role', '查看角色'))
+                        $("#currentTableBar").append(getButton(4, 'role', '角色'))
+                        $("#currentTableBar").append(getButton(4, 'admin', '管理员'))
                     }
                 }
             })
@@ -187,19 +188,47 @@
                     layer.close(index);
                 });
             } else if (obj.event === 'role') {
-                var index = layer.open({
-                    title: '编辑用户权限',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: './role.html?uid='+data.uid,
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
+                if (data.is_admin == 0) {
+                    layer.alert("普通用户无法分配角色");
+                } else {
+                    var index = layer.open({
+                        title: '编辑用户权限',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin:true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: './role.html?uid='+data.uid,
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                }
                 return false;
+            } else if (obj.event === 'admin') {
+                const is_admin = 1-obj.data.is_admin
+                layer.confirm('确认更改', function (index) {
+                    $.ajax({
+                        url: getPort()+'user/setAdmin',
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "uid": data.uid,
+                            "is_admin": is_admin
+                        },
+                        success: function (data) {
+                            table.reload('currentTableId', {
+                                page: {
+                                    curr: 1
+                                }
+                                , where: {
+                                    "where": data.field
+                                }
+                            }, 'data');
+                        }
+                    })
+                    layer.close(index);
+                });
             }
 
         });

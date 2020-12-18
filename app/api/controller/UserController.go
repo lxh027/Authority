@@ -66,6 +66,33 @@ func DeleteUsers(c *gin.Context) {
 	return
 }
 
+func SetUserAdmin(c *gin.Context)  {
+	if res := haveAuth(c, "roleAssign"); res != common.Authed {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
+	userValidate := validate.UserValidate
+	userModel := model.User{}
+
+	if res, err:= userValidate.Validate(c, "delete"); !res {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, err.Error(), 0))
+		return
+	}
+
+	userIDJson := struct {
+		Uid	int `json:"uid" form:"uid"`
+		IsAdmin int `json:"is_admin" form:"is_admin"`
+	}{}
+
+	if c.ShouldBind(&userIDJson) == nil {
+		res := userModel.SetAdmin(userIDJson.Uid, userIDJson.IsAdmin)
+		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
+		return
+	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
+	return
+}
+
 func DeleteUser(c *gin.Context)  {
 	if res := haveAuth(c, "deleteUser"); res != common.Authed {
 		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))

@@ -21,6 +21,7 @@ func Routes(router *gin.Engine)  {
 			user.POST("/getUserInfo", controller.GetUserInfo)
 			user.POST("/updateUser", controller.UpdateUser)
 			user.POST("/deleteUser", controller.DeleteUser)
+			user.POST("/setAdmin", controller.SetUserAdmin)
 		}
 
 		role := api.Group("/role")

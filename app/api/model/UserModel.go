@@ -10,6 +10,16 @@ type User struct {
 	IsAdmin	int 	`json:"is_admin" form:"is_admin"`
 }
 
+func (model *User) SetAdmin(uid int, isAdmin int) common.ReturnType {
+	err := db.Model(&User{}).Where("uid = ?", uid).Update("is_admin", isAdmin).Error
+
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "更新失败", Data: false}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "更新成功", Data: true}
+	}
+}
+
 func (model *User) UpdateUser(userID int, updateUser User) common.ReturnType  {
 	err := db.Model(&User{}).Where("uid = ?", userID).Update(updateUser).Error
 
