@@ -62,12 +62,12 @@ func (model *User) GetAllUser(offset int, limit int, nick string, email string) 
 	var users []User
 	where := "nick like ? AND mail like ?"
 	var count int
-	db.Model(&User{}).Where(where, "%"+nick+"%", "%"+email+"%").Count(&count)
 
 	err := db.Offset(offset).
 		Limit(limit).
 		Where(where, "%"+nick+"%", "%"+email+"%").
 		Find(&users).
+		Count(&count).
 		Error
 
 	if err != nil {

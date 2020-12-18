@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户权限更改</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../lib/layui-v2.5.5/css/layui.css"  media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<div id="role" class="demo-transfer" align="center"></div>
+
+
+<script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/common.js"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    layui.use(['transfer', 'layer', 'util'], function(){
+        var $ = layui.jquery
+            ,transfer = layui.transfer
+            ,layer = layui.layer
+            ,util = layui.util;
+
+        let auths = [], uid = 0, roleData = [];
+
+        $(document).ready(() => {
+            uid = getQueryString("uid")
+            $.ajax({
+                url: getPort()+'user/getUserInfo',
+                type: "post",
+                dataType: "json",
+                data: {},
+                success: function (return_data) {
+                    const data = return_data.data
+                    auths = data.auths
+                    if (auths.indexOf("roleAssign") === -1) {
+                        layer.msg("权限不足", () => {
+                            window.location.href = "../404.html"
+                        })
+                    }
+                }
+            }).then(() => {
+                $.ajax({
+                    url: getPort()+'userRole/getUserRoles',
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "uid": uid
+                    },
+                    success: function (data) {
+                        if (data.status == 0) {
+                            transfer.render({
+                                id : 'roleTransfer',
+                                contentType: 'application/json',
+                                elem: '#role',
+                                width: 500,
+                                data: data.data.allRoles,
+                                title: ['未拥有角色', '拥有角色'],
+                                value: data.data.values,
+                                //value: ["1", "3", "5", "7", "9", "11"],
+                                parseData: function(res){
+                                    return {
+                                        "value": res.rid, //数据值
+                                        "title": res.name+"："+res.desc, //数据标题
+                                        "disabled": res.disabled,  //是否禁用
+                                        "checked": res.checked, //是否选中
+                                    }
+                                },
+                                showSearch: true,
+                                onchange: function(obj, index){
+                                    var queryUrl = ['userRole/addUserRoles', 'userRole/deleteUserRoles'];
+                                    let ridArray = []
+                                    obj.forEach((data) => {
+                                        ridArray.push(data.value)
+                                    })
+                                    ridArray = JSON.stringify(ridArray)
+                                    console.log(ridArray)
+                                    $.ajax({
+                                        url: getPort()+queryUrl[index],
+                                        type: "post",
+                                        dataType: "json",
+                                        data: {
+                                            "uid": uid,
+                                            "rids": ridArray
+                                        },
+                                        success: function (return_data) {
+                                            layer.msg(return_data.msg)
+                                            reloadRoleData()
+                                        }
+                                    })
+                                }
+                            })
+                        } else {
+                            layer.msg("获取信息错误", () => {
+                                window.location.href = "../404.html"
+                            })
+                        }
+                    }
+                })
+                return false;
+            })
+        })
+
+        function reloadRoleData() {
+            $.ajax({
+                url: getPort()+'userRole/getUserRoles',
+                type: "post",
+                dataType: "json",
+                data: {
+                    "uid": uid
+                },
+                success: function (data) {
+                    if (data.status == 0) {
+                        transfer.reload('roleTransfer', {
+                            width: 500,
+                            data: data.data.allRoles,
+                            title: ['未拥有角色', '拥有角色'],
+                            value: data.data.values,
+                            //value: ["1", "3", "5", "7", "9", "11"],
+                            parseData: function(res){
+                                return {
+                                    "value": res.rid, //数据值
+                                    "title": res.name+"："+res.desc, //数据标题
+                                    "disabled": res.disabled,  //是否禁用
+                                    "checked": res.checked, //是否选中
+                                }
+                            },
+                            showSearch: true,
+                            onchange: function(obj, index){
+                                var queryUrl = ['userRole/addUserRoles', 'userRole/deleteUserRoles'];
+                                let ridArray = []
+                                obj.forEach((data) => {
+                                    ridArray.push(data.value)
+                                })
+                                ridArray = JSON.stringify(ridArray)
+                                console.log(ridArray)
+                                $.ajax({
+                                    url: getPort()+queryUrl[index],
+                                    type: "post",
+                                    dataType: "json",
+                                    data: {
+                                        "uid": uid,
+                                        "rids": ridArray
+                                    },
+                                    success: function (return_data) {
+                                        layer.msg(return_data.msg)
+                                        reloadRoleData()
+                                    }
+                                })
+                            }
+                        })
+                    } else {
+                        layer.msg("获取信息错误", () => {
+                            window.location.href = "../404.html"
+                        })
+                    }
+                }
+            })
+        }
+
+        //模拟数据
+        var data1 = [
+            {"value": "1", "title": "李白"}
+            ,{"value": "2", "title": "杜甫"}
+            ,{"value": "3", "title": "苏轼"}
+            ,{"value": "4", "title": "李清照"}
+            ,{"value": "5", "title": "鲁迅", "disabled": true}
+            ,{"value": "6", "title": "巴金"}
+            ,{"value": "7", "title": "冰心"}
+            ,{"value": "8", "title": "矛盾"}
+            ,{"value": "9", "title": "贤心"}
+        ]
+
+            ,data2 = [
+            {"value": "1", "title": "瓦罐汤"}
+            ,{"value": "2", "title": "油酥饼"}
+            ,{"value": "3", "title": "炸酱面"}
+            ,{"value": "4", "title": "串串香", "disabled": true}
+            ,{"value": "5", "title": "豆腐脑"}
+            ,{"value": "6", "title": "驴打滚"}
+            ,{"value": "7", "title": "北京烤鸭"}
+            ,{"value": "8", "title": "烤冷面"}
+            ,{"value": "9", "title": "毛血旺", "disabled": true}
+            ,{"value": "10", "title": "肉夹馍"}
+            ,{"value": "11", "title": "臊子面"}
+            ,{"value": "12", "title": "凉皮"}
+            ,{"value": "13", "title": "羊肉泡馍"}
+            ,{"value": "14", "title": "冰糖葫芦", "disabled": true}
+            ,{"value": "15", "title": "狼牙土豆"}
+        ]
+
+
+
+        //显示搜索框
+
+
+        //数据格式解析
+        transfer.render({
+            elem: '#test5'
+            ,parseData: function(res){
+                return {
+                    "value": res.id //数据值
+                    ,"title": res.name //数据标题
+                    ,"disabled": res.disabled  //是否禁用
+                    ,"checked": res.checked //是否选中
+                }
+            }
+            ,data: [
+                {"id": "1", "name": "李白"}
+                ,{"id": "2", "name": "杜甫"}
+                ,{"id": "3", "name": "贤心"}
+            ]
+            ,height: 150
+        })
+
+        //穿梭时的回调
+        transfer.render({
+            elem: '#test6'
+            ,data: data1
+            ,onchange: function(obj, index){
+                var arr = ['左边', '右边'];
+                layer.alert('来自 <strong>'+ arr[index] + '</strong> 的数据：'+ JSON.stringify(obj)); //获得被穿梭时的数据
+            }
+        })
+
+        //实例调用
+        transfer.render({
+            elem: '#test7'
+            ,data: data1
+            ,id: 'key123' //定义唯一索引
+        })
+        //批量办法定事件
+        util.event('lay-demoTransferActive', {
+            getData: function(othis){
+                var getData = transfer.getData('key123'); //获取右侧数据
+                layer.alert(JSON.stringify(getData));
+            }
+            ,reload:function(){
+                //实例重载
+                transfer.reload('key123', {
+                    title: ['文人', '喜欢的文人']
+                    ,value: ['2', '5', '9']
+                    ,showSearch: true
+                })
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

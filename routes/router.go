@@ -22,6 +22,18 @@ func Routes(router *gin.Engine)  {
 			user.POST("/updateUser", controller.UpdateUser)
 			user.POST("/deleteUser", controller.DeleteUser)
 		}
+
+		role := api.Group("/role")
+		{
+			role.POST("/getAllRole", controller.GetAllRole)
+		}
+
+		userRole := api.Group("/userRole")
+		{
+			userRole.POST("/getUserRoles", controller.GetUserRoles)
+			userRole.POST("/addUserRoles", controller.AddUserRoles)
+			userRole.POST("/deleteUserRoles", controller.DeleteUserRoles)
+		}
 	}
 	router.StaticFS("/public", http.Dir("./web"))
 }
