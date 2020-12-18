@@ -31,7 +31,7 @@ func Routes(router *gin.Engine)  {
 
 		userRole := api.Group("/userRole")
 		{
-			userRole.POST("/getUserRoles", controller.GetUserRoles)
+			userRole.POST("/getUserRolesList", controller.GetUserRolesList)
 			userRole.POST("/addUserRoles", controller.AddUserRoles)
 			userRole.POST("/deleteUserRoles", controller.DeleteUserRoles)
 		}
