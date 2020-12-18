@@ -5,11 +5,11 @@ func GetDbConfig() map[string]interface{} {
 	// init db config
 	dbConfig := make(map[string]interface{})
 
-	dbConfig["hostname"] 	= "localhost"
+	dbConfig["hostname"] 	= "lxh001.top"
 	dbConfig["port"] 		= "3306"
-	dbConfig["database"] 	= ""
-	dbConfig["username"] 	= "root"
-	dbConfig["password"] 	= ""
+	dbConfig["database"] 	= "authority"
+	dbConfig["username"] 	= "614"
+	dbConfig["password"] 	= "661144"
 	dbConfig["charset"]		= "utf8"
 	dbConfig["parseTime"]	= "True"
 
