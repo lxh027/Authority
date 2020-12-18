@@ -41,9 +41,7 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
-            <a class="layui-btn layui-btn-xs layui-btn-warm data-count-delete" lay-event="role">查看角色</a>
+
         </script>
 
     </div>
@@ -58,6 +56,35 @@
             form = layui.form,
             table = layui.table;
         let auths
+        
+        $(document).ready(() => {
+            uid = getQueryString("uid")
+            $.ajax({
+                url: getPort()+'user/getUserInfo',
+                type: "post",
+                dataType: "json",
+                data: {},
+                success: function (return_data) {
+                    const data = return_data.data
+                    auths = data.auths
+                    if (auths.indexOf("getAllUser") === -1) {
+                        layer.msg("权限不足", () => {
+                            window.location.href = "../404.html"
+                        })
+                    }
+                    if (auths.indexOf("updateUser") !== -1) {
+                        $("#currentTableBar").append(getButton(2, 'edit', '编辑'))
+                    }
+                    if (auths.indexOf("deleteUser") !== -1) {
+                        $("#currentTableBar").append(getButton(3, 'delete', '删除'))
+                    }
+                    if (auths.indexOf("roleAssign") !== -1) {
+                        $("#currentTableBar").append(getButton(4, 'role', '查看角色'))
+                    }
+                }
+            })
+        })
+
         table.render({
             elem: '#currentTableId',
             url: getPort()+'user/getAllUser',
