@@ -11,10 +11,10 @@ import (
 )
 
 func UpdateUser(c *gin.Context)  {
-	/*if res := haveAuth(c, "updateUser"); res != common.Authed {
+	if res := haveAuth(c, "updateUser"); res != common.Authed {
 		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
 		return
-	}*/
+	}
 	userValidate := validate.UserValidate
 	userModel := model.User{}
 
@@ -35,6 +35,10 @@ func UpdateUser(c *gin.Context)  {
 }
 
 func DeleteUsers(c *gin.Context) {
+	if res := haveAuth(c, "deleteUser"); res != common.Authed {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
 	userValidate := validate.UserValidate
 	userModel := model.User{}
 
@@ -63,6 +67,10 @@ func DeleteUsers(c *gin.Context) {
 }
 
 func DeleteUser(c *gin.Context)  {
+	if res := haveAuth(c, "deleteUser"); res != common.Authed {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
 	userValidate := validate.UserValidate
 	userModel := model.User{}
 
@@ -85,6 +93,10 @@ func DeleteUser(c *gin.Context)  {
 }
 
 func GetAllUser(c *gin.Context)  {
+	if res := haveAuth(c, "getAllUser"); res != common.Authed {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
 	userModel := model.User{}
 
 	userJson := struct {
@@ -107,6 +119,10 @@ func GetAllUser(c *gin.Context)  {
 }
 
 func GetUserByID(c *gin.Context) {
+	if res := haveAuth(c, "getAllUser"); res != common.Authed {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
 	userValidate := validate.UserValidate
 	userModel := model.User{}
 
