@@ -7,13 +7,14 @@ var RoleValidate common.Validator
 func init() {
 	rules := map[string]string {
 		"rid"	: "required",
+		"name"	: "required",
 		"desc"	: "required",
 	}
 
 	scenes := map[string] []string {
-		"add" : {"desc"},
+		"add" : {"name", "desc"},
 		"delete": {"rid"},
-		"update": {"rid", "desc"},
+		"update": {"rid", "desc", "name"},
 	}
 
 	RoleValidate.Rules = rules
