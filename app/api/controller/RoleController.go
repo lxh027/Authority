@@ -9,6 +9,10 @@ import (
 )
 // TODO 注册权限
 func GetAllRole(c *gin.Context)  {//??
+	if res := haveAuth(c, "getAllRole"); res != common.Authed {//getAllUser怎么改？
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
 	roleModel := model.Role{}
 
 	roleJson := struct {
