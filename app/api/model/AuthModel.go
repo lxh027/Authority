@@ -27,11 +27,12 @@ func (model *Auth) GetAllAuth(offset int, limit int, title string) common.Return
 	where := "title like ?"
 	var count int
 
-	err := db.Offset(offset).
-		Limit(limit).
+	db.Model(&Auth{}).Where(where, "%"+title+"%").Count(&count)
+
+	err := db.
 		Where(where, "%"+title+"%").
+		Limit(limit).Offset(offset).
 		Find(&auths).
-		Count(&count).
 		Error
 
 	if err != nil {
@@ -44,4 +45,38 @@ func (model *Auth) GetAllAuth(offset int, limit int, title string) common.Return
 			},
 		}
 	}
+}
+
+func (model *Auth) GetParentAuth(parent int) common.ReturnType {
+	var auths []Auth
+	where := "type = ?"
+
+	err := db.
+		Where(where, parent).
+		Find(&auths).
+		Error
+
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "查询失败", Data: err.Error()}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "查询成功", Data: auths,
+		}
+	}
+}
+
+func (model *Auth) AddAuth(newAuth Auth) common.ReturnType {
+	auth :=Auth{}
+
+	if err := db.Where("type = ? AND title = ?", newAuth.Type,newAuth.Title).First(&auth).Error; err == nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "此类型权限名已存在",  Data: false}
+	}
+
+	err := db.Create(&newAuth).Error
+
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "创建失败", Data: err.Error()}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "创建成功", Data: true}
+	}
+
 }

@@ -41,6 +41,8 @@ func Routes(router *gin.Engine)  {
 		auth := api.Group("/auth")
 		{
 			auth.POST("/getAllAuth", controller.GetAllAuth)
+			auth.POST("/getParentAuth", controller.GetParentAuth)
+			auth.POST("/addAuth", controller.AddAuth)
 		}
 	}
 	router.StaticFS("/public", http.Dir("./web"))
