@@ -19,6 +19,7 @@ func GetAllAuth(c *gin.Context)  {
 		Limit 	int 	`json:"limit" form:"limit"`
 		Where 	struct{
 			Title 	string 	`json:"title" form:"title"`
+			Type 	int 	`json:"type" form:"type"`
 		}
 	}{}
 
