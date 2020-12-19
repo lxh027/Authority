@@ -19,13 +19,12 @@ func GetAllAuth(c *gin.Context)  {
 		Limit 	int 	`json:"limit" form:"limit"`
 		Where 	struct{
 			Title 	string 	`json:"title" form:"title"`
-			Type 	int 	`json:"type" form:"type"`
 		}
 	}{}
 
 	if c.ShouldBind(&authJson) == nil {
 		authJson.Offset = (authJson.Offset-1)*authJson.Limit
-		res := authModel.GetAllAuth(authJson.Offset, authJson.Limit, authJson.Where.Title, authJson.Where.Type)
+		res := authModel.GetAllAuth(authJson.Offset, authJson.Limit, authJson.Where.Title)
 		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
 		return
 	}

@@ -22,14 +22,14 @@ func (model *Auth) GetUserAllAuth(userID int) common.ReturnType  {
 	return common.ReturnType{Status: common.CodeSuccess, Msg: "OK", Data: auths}
 }
 
-func (model *Auth) GetAllAuth(offset int, limit int, title string, auth int) common.ReturnType {
+func (model *Auth) GetAllAuth(offset int, limit int, title string) common.ReturnType {
 	var auths []Auth
-	where := "title like ? AND type like ?"
+	where := "title like ?"
 	var count int
 
 	err := db.Offset(offset).
 		Limit(limit).
-		Where(where, "%"+title+"%", "%"+string(rune(auth))+"%").
+		Where(where, "%"+title+"%").
 		Find(&auths).
 		Count(&count).
 		Error
