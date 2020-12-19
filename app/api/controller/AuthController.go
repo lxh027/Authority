@@ -25,7 +25,7 @@ func GetAllAuth(c *gin.Context)  {
 
 	if c.ShouldBind(&authJson) == nil {
 		authJson.Offset = (authJson.Offset-1)*authJson.Limit
-		res := authModel.GetAllAuth(authJson.Offset, authJson.Limit, authJson.Where.Title)
+		res := authModel.GetAllAuth(authJson.Offset, authJson.Limit, authJson.Where.Title, authJson.Where.Type)
 		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
 		return
 	}
