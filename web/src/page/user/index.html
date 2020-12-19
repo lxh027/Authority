@@ -58,7 +58,6 @@
         let auths
 
         $(document).ready(() => {
-            uid = getQueryString("uid")
             $.ajax({
                 url: getPort()+'user/getUserInfo',
                 type: "post",
@@ -115,7 +114,7 @@
                 {field: 'nick', title: '昵称', sort: true},
                 {field: 'mail', title: '邮箱', sort: true, minWidth:150,},
                 {field: 'is_admin', title: '身份', sort: true, templet: (d) => {if (d.is_admin == "0") return "<p style='color: green'>普通用户</p>"; else if (d.is_admin == "1") return "<p style='color: red'>管理员</p>";}},
-                {title: '查看角色', minWidth: 150, toolbar: '#currentTableBar', align: "center"},
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"},
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
@@ -192,7 +191,7 @@
                     layer.alert("普通用户无法分配角色");
                 } else {
                     var index = layer.open({
-                        title: '编辑用户权限',
+                        title: '分配用户角色',
                         type: 2,
                         shade: 0.2,
                         maxmin:true,
