@@ -24,7 +24,7 @@ func (model *Auth) GetUserAllAuth(userID int) common.ReturnType  {
 
 func (model *Auth) GetAllAuth(offset int, limit int, title string, auth int) common.ReturnType {
 	var auths []Auth
-	where := "title like ? AND auth like ?"
+	where := "title like ? AND type like ?"
 	var count int
 
 	err := db.Offset(offset).
