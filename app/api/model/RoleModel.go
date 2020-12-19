@@ -19,11 +19,13 @@ func (model *Role) GetAllRole(offset int, limit int, name string, desc string) c
 	where := "name like ? AND `desc` like ?"
 	var count int
 
+	db.Model(&Role{}).Where(where, "%"+name+"%", "%"+desc+"%").Count(&count)
+
+
 	err := db.Offset(offset).
 		Limit(limit).
 		Where(where, "%"+name+"%", "%"+desc+"%").
 		Find(&roles).
-		Count(&count).
 		Error
 
 	if err != nil {
