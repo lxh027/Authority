@@ -71,7 +71,14 @@ func (model *Auth) AddAuth(newAuth Auth) common.ReturnType {
 		return common.ReturnType{Status: common.CodeError, Msg: "此类型权限名已存在",  Data: false}
 	}
 
-	err := db.Create(&newAuth).Error
+	var err error
+	if newAuth.Type == 0 {
+		sqlLine := "INSERT INTO auth (icon, title, href, target, type) VALUES (?, ?, ?, ?, ?)"
+		err = db.Exec(sqlLine, newAuth.Icon, newAuth.Title, newAuth.Href, newAuth.Target, newAuth.Type).Error
+	} else {
+		err = db.Create(&newAuth).Error
+	}
+
 
 	if err != nil {
 		return common.ReturnType{Status: common.CodeError, Msg: "创建失败", Data: err.Error()}

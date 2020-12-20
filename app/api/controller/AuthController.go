@@ -78,8 +78,6 @@ func AddAuth(c *gin.Context)  {
 		authJson.Target = "_self"
 		if authJson.Type != 1 {
 			authJson.Href = ""
-		} else if authJson.Type == 0 {
-			authJson.Parent = 0
 		}
  		res := authModel.AddAuth(authJson)
 		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
