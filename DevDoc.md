@@ -290,3 +290,20 @@ func Routes(router *gin.Engine)  {
 |   `roleAuth/addRoleAuths`   |                      批量添加角色的权限                      |   `userRole/addUserRoles`   |
 | `roleAuth/deleteRoleAuths`  |                      批量删除角色的权限                      | `userRole/deleteUserRoles`  |
 
+## 工作剩余（12.21更新）
+
+### 前端
+
+|       页面       |                             功能                             |                      参考页面                       |
+| :--------------: | :----------------------------------------------------------: | :-------------------------------------------------: |
+| `role/edit.html` |                 编辑角色信息，包括name和desc                 |                  `user/edit.html`                   |
+| `role/auth.html` | 编辑角色的权限信息，通过穿梭栏组件实现，添加或删除角色的权限 |                  `user/role.html`                   |
+| `auth/edit.html` | 编辑权限信息，要求同态加载组件：若类型为菜单，则仅可修改title和icon；若类型为页面，则可修改title, icon, href和parent；若类型为操作，则可修改title, icon和parent。其中icon的选择要通过icon选择器，parent的选择需要加载select组件 | 编辑权限：`role/edit.html`加载组件：`auth/add.html` |
+
+### 后端
+
+|            API             |                             功能                             |          参考API           |
+| :------------------------: | :----------------------------------------------------------: | :------------------------: |
+|     `auth/updateAuth`      | 更新权限信息，更新信息需要根据类型改变，具体关联和前端edit的要求相同 |     `user/updateUser`      |
+|  `roleAuth/addRoleAuths`   |                      批量添加角色的权限                      |  `userRole/addUserRoles`   |
+| `roleAuth/deleteRoleAuths` |                      批量删除角色的权限                      | `userRole/deleteUserRoles` |
