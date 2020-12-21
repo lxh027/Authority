@@ -124,3 +124,23 @@ func (model *Role) AddRole(newRole Role) common.ReturnType {//jun
 		return common.ReturnType{Status: common.CodeSuccess, Msg: "创建成功", Data: true}
 	}
 }
+
+func (model *Role) DeleteRole(roleID int) common.ReturnType  {
+	err := db.Where("rid = ?", roleID).Delete(Role{}).Error
+
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "删除失败", Data: false}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "删除成功", Data: true}
+	}
+}
+
+func (model *Role) UpdateRole(roleID int, updateRole Role) common.ReturnType  {
+	err := db.Model(&Role{}).Where("rid = ?", roleID).Update(updateRole).Error
+
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "更新失败", Data: false}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "更新成功", Data: true}
+	}
+}

@@ -86,3 +86,29 @@ func AddAuth(c *gin.Context)  {
 	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
 	return
 }
+
+func DeleteAuth(c *gin.Context)  {
+	if res := haveAuth(c, "deleteAuth"); res != common.Authed {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
+	authValidate := validate.AuthValidate
+	authModel := model.Auth{}
+
+	if res, err:= authValidate.Validate(c, "delete"); !res {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, err.Error(), 0))
+		return
+	}
+
+	authIDJson := struct {
+		Aid	int `json:"aid" form:"aid"`
+	}{}
+
+	if c.ShouldBind(&authIDJson) == nil {
+		res := authModel.DeleteAuth(authIDJson.Aid)
+		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
+		return
+	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
+	return
+}

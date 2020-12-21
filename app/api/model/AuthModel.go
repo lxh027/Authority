@@ -87,3 +87,71 @@ func (model *Auth) AddAuth(newAuth Auth) common.ReturnType {
 	}
 
 }
+
+func (model *Auth) DeleteAuth(authID int) common.ReturnType  {
+	err := db.Where("aid = ?", authID).Delete(Auth{}).Error
+
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "删除失败", Data: false}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "删除成功", Data: true}
+	}
+}
+
+func (model *Auth) GetRoleAuth(rid int) common.ReturnType {
+	var auths []Auth
+
+	err := db.
+		Joins("JOIN role_auth ON auth.aid = role_auth.aid AND role_auth.rid = ? ", rid).
+		Find(&auths).
+		Error
+
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "查询失败", Data: err.Error()}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "查询成功", Data: auths,
+		}
+	}
+}
+
+func (model *Auth) GetAuthNoRules() common.ReturnType {
+	/*var roles, rolesTotal []Role
+
+	var countTotal, countRole int
+
+	err1 := db.Order("rid").Find(&rolesTotal).
+		Count(&countTotal).Error
+
+	err2 := db.Joins("JOIN user_role ON role.rid = user_role.rid AND user_role.uid = ? ", uid).
+		Order("rid").
+		Find(&roles).
+		Count(&countRole).Error
+
+	countLeft := countTotal-countRole
+	var rolesLeft []Role
+	j := 0
+	for i := 0; i < countRole; i++ {
+		if roles[i].Rid == rolesTotal[j].Rid {
+			j++
+			continue
+		}
+		for roles[i].Rid != rolesTotal[j].Rid {
+			rolesLeft = append(rolesLeft, rolesTotal[j])
+			j++
+		}
+	}
+	for j < countTotal {
+		rolesLeft = append(rolesLeft, rolesTotal[j])
+		j++
+	}*/
+	var authsTotal []Role
+
+	err := db.Find(&authsTotal).Error
+
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "查询失败", Data: err.Error()}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "查询成功", Data: authsTotal,
+		}
+	}
+}

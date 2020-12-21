@@ -81,3 +81,53 @@ func AddRole(c *gin.Context) { //jun
 	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
 	return
 }
+
+func DeleteRole(c *gin.Context)  {
+	if res := haveAuth(c, "deleteRole"); res != common.Authed {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
+	roleValidate := validate.RoleValidate
+	roleModel := model.Role{}
+
+	if res, err:= roleValidate.Validate(c, "delete"); !res {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, err.Error(), 0))
+		return
+	}
+
+	roleIDJson := struct {
+		Rid	int `json:"rid" form:"rid"`
+	}{}
+
+	if c.ShouldBind(&roleIDJson) == nil {
+		res := roleModel.DeleteRole(roleIDJson.Rid)
+		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
+		return
+	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
+	return
+}
+
+func UpdateRole(c *gin.Context)  {
+	if res := haveAuth(c, "updateRole"); res != common.Authed {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
+	roleValidate := validate.RoleValidate
+	roleModel := model.Role{}
+
+	if res, err:= roleValidate.Validate(c, "update"); !res {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, err.Error(), 0))
+		return
+	}
+
+	var roleJson model.Role
+
+	if c.ShouldBind(&roleJson) == nil {
+		res := roleModel.UpdateRole(roleJson.Rid, roleJson)
+		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
+		return
+	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
+	return
+}

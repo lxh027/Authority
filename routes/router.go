@@ -29,6 +29,8 @@ func Routes(router *gin.Engine)  {
 			role.POST("/getAllRole", controller.GetAllRole)
 			role.POST("/getRoleByID", controller.GetRoleByID)
 			role.POST("/addRole", controller.AddRole)
+			role.POST("/deleteRole", controller.DeleteRole)
+			role.POST("/updateRole", controller.UpdateRole)
 		}
 
 		userRole := api.Group("/userRole")
@@ -43,6 +45,11 @@ func Routes(router *gin.Engine)  {
 			auth.POST("/getAllAuth", controller.GetAllAuth)
 			auth.POST("/getParentAuth", controller.GetParentAuth)
 			auth.POST("/addAuth", controller.AddAuth)
+			auth.POST("/deleteAuth", controller.DeleteAuth)
+		}
+		roleAuth :=api.Group("roleAuth")
+		{
+			roleAuth.POST("/getRoleAuthsList", controller.GetRoleAuthsList)
 		}
 	}
 	router.StaticFS("/public", http.Dir("./web"))
