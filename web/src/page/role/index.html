@@ -165,7 +165,7 @@
             } else if (obj.event === 'delete') {
                 layer.confirm('确认删除', function (index) {
                     $.ajax({
-                        url: getPort()+'user/deleteRole',
+                        url: getPort()+'role/deleteRole',
                         type: "post",
                         dataType: "json",
                         data: {
