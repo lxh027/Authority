@@ -115,36 +115,7 @@ func (model *Auth) GetRoleAuth(rid int) common.ReturnType {
 }
 
 func (model *Auth) GetAuthNoRules() common.ReturnType {
-	/*var roles, rolesTotal []Role
-
-	var countTotal, countRole int
-
-	err1 := db.Order("rid").Find(&rolesTotal).
-		Count(&countTotal).Error
-
-	err2 := db.Joins("JOIN user_role ON role.rid = user_role.rid AND user_role.uid = ? ", uid).
-		Order("rid").
-		Find(&roles).
-		Count(&countRole).Error
-
-	countLeft := countTotal-countRole
-	var rolesLeft []Role
-	j := 0
-	for i := 0; i < countRole; i++ {
-		if roles[i].Rid == rolesTotal[j].Rid {
-			j++
-			continue
-		}
-		for roles[i].Rid != rolesTotal[j].Rid {
-			rolesLeft = append(rolesLeft, rolesTotal[j])
-			j++
-		}
-	}
-	for j < countTotal {
-		rolesLeft = append(rolesLeft, rolesTotal[j])
-		j++
-	}*/
-	var authsTotal []Role
+	var authsTotal []Auth
 
 	err := db.Find(&authsTotal).Error
 

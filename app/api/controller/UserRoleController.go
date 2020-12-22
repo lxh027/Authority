@@ -35,7 +35,7 @@ func AddUserRoles(c *gin.Context)  {
 		for _, rid := range rids {
 			res := userRoleModel.AddUserRole(model.UserRole{Uid: userRolesJson.Uid, Rid: rid})
 			if res.Status != common.CodeSuccess {
-				c.JSON(http.StatusOK, common.ApiReturn(res.Status, "编号为"+string(rune(rid))+"的权限添加失败", res.Data))
+				c.JSON(http.StatusOK, common.ApiReturn(res.Status, "编号为"+string(rune(rid))+"的角色添加失败", res.Data))
 			}
 		}
 		c.JSON(http.StatusOK, common.ApiReturn(common.CodeSuccess, "添加成功", true))

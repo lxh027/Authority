@@ -50,6 +50,7 @@ func Routes(router *gin.Engine)  {
 		roleAuth :=api.Group("roleAuth")
 		{
 			roleAuth.POST("/getRoleAuthsList", controller.GetRoleAuthsList)
+			roleAuth.POST("/addRoleAuths", controller.AddRoleAuths)
 		}
 	}
 	router.StaticFS("/public", http.Dir("./web"))
