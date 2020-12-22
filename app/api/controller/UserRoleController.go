@@ -36,6 +36,7 @@ func AddUserRoles(c *gin.Context)  {
 			res := userRoleModel.AddUserRole(model.UserRole{Uid: userRolesJson.Uid, Rid: rid})
 			if res.Status != common.CodeSuccess {
 				c.JSON(http.StatusOK, common.ApiReturn(res.Status, "编号为"+string(rune(rid))+"的角色添加失败", res.Data))
+				return
 			}
 		}
 		c.JSON(http.StatusOK, common.ApiReturn(common.CodeSuccess, "添加成功", true))
@@ -71,6 +72,7 @@ func DeleteUserRoles(c *gin.Context)  {
 			res := userRoleModel.DeleteUserRole(model.UserRole{Uid: userRolesJson.Uid, Rid: rid})
 			if res.Status != common.CodeSuccess {
 				c.JSON(http.StatusOK, common.ApiReturn(res.Status, "编号为"+string(rune(rid))+"的权限删除失败", res.Data))
+				return
 			}
 		}
 		c.JSON(http.StatusOK, common.ApiReturn(common.CodeSuccess, "删除成功", true))

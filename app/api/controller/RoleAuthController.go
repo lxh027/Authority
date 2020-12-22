@@ -77,6 +77,7 @@ func AddRoleAuths(c *gin.Context)  {
 			res := roleAuthModel.AddRoleAuth(model.RoleAuth{Rid: roleAuthsJson.Rid, Aid: aid})
 			if res.Status != common.CodeSuccess {
 				c.JSON(http.StatusOK, common.ApiReturn(res.Status, "编号为"+string(rune(aid))+"的权限添加失败", res.Data))
+				return
 			}
 		}
 		c.JSON(http.StatusOK, common.ApiReturn(common.CodeSuccess, "添加成功", true))
