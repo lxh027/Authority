@@ -46,6 +46,8 @@ func Routes(router *gin.Engine)  {
 			auth.POST("/getParentAuth", controller.GetParentAuth)
 			auth.POST("/addAuth", controller.AddAuth)
 			auth.POST("/deleteAuth", controller.DeleteAuth)
+			auth.POST("/getAuthByID", controller.GetAuthByID)
+			auth.POST("/updateAuth", controller.UpdateAuth)
 		}
 		roleAuth :=api.Group("roleAuth")
 		{

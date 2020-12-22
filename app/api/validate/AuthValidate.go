@@ -16,8 +16,9 @@ func init() {
 	scenes := map[string] []string {
 		"add" : {"title", "type", "icon"},
 		"delete": {"aid"},
-		"find"	: {"rid"},
+		"find"	: {"aid"},
 		"findParent": {"parent"},
+		"update": {"aid", "title", "icon"},
 	}
 
 	AuthValidate.Rules = rules

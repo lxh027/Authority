@@ -112,3 +112,55 @@ func DeleteAuth(c *gin.Context)  {
 	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
 	return
 }
+
+func UpdateAuth(c *gin.Context)  {
+	if res := haveAuth(c, "updateAuth"); res != common.Authed {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
+	if res := haveAuth(c, "updateAuth"); res != common.Authed {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
+	authValidate := validate.AuthValidate
+	authModel := model.Auth{}
+
+	if res, err:= authValidate.Validate(c, "update"); !res {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, err.Error(), 0))
+		return
+	}
+
+	var authJson model.Auth
+
+	if c.ShouldBind(&authJson) == nil {
+		res := authModel.UpdateAuth(authJson.Aid, authJson)
+		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
+		return
+	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
+	return
+}
+
+func GetAuthByID(c *gin.Context) {
+	if res := haveAuth(c, "getAllAuth"); res != common.Authed {//getAllUser怎么改？
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "权限不足", res))
+		return
+	}
+	authValidate := validate.AuthValidate
+	authModel := model.Auth{}
+
+	if res, err:= authValidate.Validate(c, "find"); !res {
+		c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, err.Error(), 0))
+		return
+	}
+
+	var authJson model.Auth
+
+	if c.ShouldBind(&authJson) == nil {
+		res := authModel.GetAuthByID(authJson.Aid)
+		c.JSON(http.StatusOK, common.ApiReturn(res.Status, res.Msg, res.Data))
+		return
+	}
+	c.JSON(http.StatusOK, common.ApiReturn(common.CodeError, "绑定数据模型失败", false))
+	return
+}

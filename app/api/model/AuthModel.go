@@ -98,6 +98,21 @@ func (model *Auth) DeleteAuth(authID int) common.ReturnType  {
 	}
 }
 
+func (model *Auth) UpdateAuth(authID int, updateAuth Auth) common.ReturnType  {
+	fields := [][]string {
+		{"title", "icon"},
+		{"title", "icon", "href", "parent"},
+		{"title", "icon", "parent"},
+	}
+	err := db.Model(&Auth{}).Select(fields[updateAuth.Type]).Where("aid = ?", authID).Update(updateAuth).Error
+
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "更新失败", Data: false}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "更新成功", Data: true}
+	}
+}
+
 func (model *Auth) GetRoleAuth(rid int) common.ReturnType {
 	var auths []Auth
 
@@ -124,5 +139,20 @@ func (model *Auth) GetAuthNoRules() common.ReturnType {
 	} else {
 		return common.ReturnType{Status: common.CodeSuccess, Msg: "查询成功", Data: authsTotal,
 		}
+	}
+}
+
+func (model *Auth) GetAuthByID(aid int) common.ReturnType {//jun
+	var getAuth Auth
+
+	var err error
+
+	err = db.Select([]string {"icon", "title", "type", "href", "parent"}).
+		Where("aid = ?", aid).First(&getAuth).Error
+
+	if err != nil {
+		return common.ReturnType{Status: common.CodeError, Msg: "查询失败", Data: err.Error()}
+	} else {
+		return common.ReturnType{Status: common.CodeSuccess, Msg: "查询成功", Data: getAuth}
 	}
 }
