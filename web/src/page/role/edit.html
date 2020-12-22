@@ -17,13 +17,13 @@
 <body>
 <div class="layui-form layuimini-form">
     <div class="layui-form-item">
-        <label class="layui-form-label">名称</label>
+        <label class="layui-form-label">昵称</label>
         <div class="layui-input-block">
-            <input type="text" name="nick" id="nick"  placeholder="请输入用户名" value="" class="layui-input">
+            <input type="text" name="name1" id="name1"  placeholder="请输入名称" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">描述</label>
+        <label class="layui-form-label">邮箱</label>
         <div class="layui-input-block">
             <input type="text" name="desc" id="desc" placeholder="请输入描述" value="" class="layui-input">
         </div>
@@ -42,19 +42,19 @@
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
-        let auths = [], uid = 0;
+        let auths = [], rid = 0;
 
         $(document).ready(() => {
-            uid = getQueryString("uid")
+            rid = getQueryString("rid")
             $.ajax({
-                url: getPort()+'user/updateuser',
+                url: getPort()+'role/getUserRole',
                 type: "post",
                 dataType: "json",
                 data: {},
                 success: function (return_data) {
                     const data = return_data.data
                     auths = data.auths
-                    if (auths.indexOf("updateUser") === -1) {
+                    if (auths.indexOf("updateRole") === -1) {
                         layer.msg("权限不足", () => {
                             window.location.href = "../404.html"
                         })
@@ -62,15 +62,15 @@
                 }
             }).then( () => {
                 $.ajax({
-                    url: getPort()+'user/getUserByID',
+                    url: getPort()+'user/getRoleByID',
                     type: "post",
                     dataType: "json",
                     data: {
-                        "uid": uid
+                        "rid": rid
                     },
                     success: function (data) {
                         if (data.status == 0) {
-                            $("#nick").val(data.data.nick)
+                            $("#name1").val(data.data.name1)
                             $("#desc").val(data.data.desc)
                         } else {
                             layer.msg("获取信息错误", () => {
@@ -89,12 +89,12 @@
                 title: '最终的提交信息'
             }, function () {
                 $.ajax({
-                    url: getPort()+'user/updateUser',
+                    url: getPort()+'role/updateRole',
                     type: "post",
                     dataType: "json",
                     data: {
-                        "uid": uid,
-                        "nick": $("#nick").val(),
+                        "rid": rid,
+                        "name1": $("#name1").val(),
                         "desc": $("#desc").val()
                     },
                     success: function (data) {
