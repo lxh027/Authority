@@ -19,7 +19,16 @@ func (model *Auth) GetUserAllAuth(userID int) common.ReturnType  {
 		Joins("JOIN user_role ON role_auth.rid = user_role.rid AND user_role.uid = ?", userID).
 		Find(&auths)
 
-	return common.ReturnType{Status: common.CodeSuccess, Msg: "OK", Data: auths}
+	var returnAuths []Auth
+	isExist := make(map[int]bool)
+	for _, auth := range auths {
+		if _, ok := isExist[auth.Aid]; !ok {
+			returnAuths = append(returnAuths, auth)
+			isExist[auth.Aid] = true
+		}
+	}
+
+	return common.ReturnType{Status: common.CodeSuccess, Msg: "OK", Data: returnAuths}
 }
 
 func (model *Auth) GetAllAuth(offset int, limit int, title string) common.ReturnType {
