@@ -1,5 +1,5 @@
 function getPort() {
-    return "http://localhost:8888/api/"
+    return "http://lxh001.top:2233/api/"
 }
 
 function getQueryString(name)
