@@ -58,7 +58,7 @@
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:;">admin</a>
+                    <a href="javascript:;" id="admin_nick">admin</a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="javascript:;" class="login-out">退出登录</a>
@@ -153,6 +153,7 @@
                                 }
                             })
                         } else {
+                            $("#admin_nick").val(return_data.data.nick)
                             menuJson = return_data.data.menu
                         }
                     }
