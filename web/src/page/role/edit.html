@@ -17,13 +17,13 @@
 <body>
 <div class="layui-form layuimini-form">
     <div class="layui-form-item">
-        <label class="layui-form-label">昵称</label>
+        <label class="layui-form-label">名称</label>
         <div class="layui-input-block">
-            <input type="text" name="name1" id="name1"  placeholder="请输入名称" value="" class="layui-input">
+            <input type="text" name="name" id="name"  placeholder="请输入名称" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">邮箱</label>
+        <label class="layui-form-label">描述</label>
         <div class="layui-input-block">
             <input type="text" name="desc" id="desc" placeholder="请输入描述" value="" class="layui-input">
         </div>
@@ -45,9 +45,9 @@
         let auths = [], rid = 0;
 
         $(document).ready(() => {
-            rid = getQueryString("rid")
+            rid = getQueryString("id")
             $.ajax({
-                url: getPort()+'role/getUserRole',
+                url: getPort()+'user/getUserInfo',
                 type: "post",
                 dataType: "json",
                 data: {},
@@ -62,7 +62,7 @@
                 }
             }).then( () => {
                 $.ajax({
-                    url: getPort()+'user/getRoleByID',
+                    url: getPort()+'role/getRoleByID',
                     type: "post",
                     dataType: "json",
                     data: {
@@ -70,7 +70,7 @@
                     },
                     success: function (data) {
                         if (data.status == 0) {
-                            $("#name1").val(data.data.name1)
+                            $("#name").val(data.data.name)
                             $("#desc").val(data.data.desc)
                         } else {
                             layer.msg("获取信息错误", () => {
@@ -94,7 +94,7 @@
                     dataType: "json",
                     data: {
                         "rid": rid,
-                        "name1": $("#name1").val(),
+                        "name": $("#name").val(),
                         "desc": $("#desc").val()
                     },
                     success: function (data) {
