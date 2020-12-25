@@ -56,5 +56,5 @@ func Routes(router *gin.Engine)  {
 			roleAuth.POST("/deleteRoleAuths", controller.DeleteRoleAuths)
 		}
 	}
-	router.StaticFS("/public", http.Dir("./web"))
+	router.StaticFS("/", http.Dir("./web"))
 }
